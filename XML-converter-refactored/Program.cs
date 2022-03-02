@@ -15,8 +15,6 @@ namespace XML_converter_refactored {
         
         private const string TEXT_FORMAT_FILE_NAME = "textFormat.txt";
         
-
-        //private List<string[]> _textFormat = new List<string[]>();
         private static Dictionary<string, string[]> _textFormatDictionary = new Dictionary<string, string[]>();
         private static List<string[]> ReadInputFile(string filePath)
         {
@@ -32,7 +30,7 @@ namespace XML_converter_refactored {
             }
             catch (Exception e)
             {
-                Console.WriteLine("{0} Exception caught.", e);
+                Console.WriteLine("Exception caught: {0}", e);
             }
             return textList;
         }
@@ -48,13 +46,13 @@ namespace XML_converter_refactored {
             return textFormatArray;
         }
 
-        private static void WriteToXml(string elementName, string elementValue, XmlWriter writer)
+        private static void WriteToXmlFile(string elementName, string elementValue, XmlWriter writer)
         {
             writer.WriteStartElement(elementName);
             writer.WriteString(elementValue);
             writer.WriteEndElement();
         }
-        private static void ConvertToXml(List<string[]> textList, string filePath)
+        private static void XmlConverterDriver(List<string[]> textList, string filePath)
         {
             Console.WriteLine("Converting to XML format...");
 
@@ -86,9 +84,9 @@ namespace XML_converter_refactored {
                     writer.WriteStartElement("person");
                     string[] elementNames = getTextFormats("P");
                     
-                    for (int i = EXCLUDED_LETTER_INDEX; i < PERSON_MAX_SLOTS; i++)
+                    for (int i = EXCLUDED_LETTER_INDEX; i < PERSON_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXml(elementNames[i - 1], textArray[i], writer);
+                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
                     }
                     
                     previousLetter = textArray[LETTER_INDEX]; 
@@ -99,9 +97,9 @@ namespace XML_converter_refactored {
                     writer.WriteStartElement("phone");
                     string[] elementNames = getTextFormats("T");
                     
-                    for (int i = EXCLUDED_LETTER_INDEX; i < PHONE_MAX_SLOTS; i++)
+                    for (int i = EXCLUDED_LETTER_INDEX; i < PHONE_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXml(elementNames[i - 1], textArray[i], writer);
+                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
                     }
 
                     writer.WriteEndElement();
@@ -111,9 +109,9 @@ namespace XML_converter_refactored {
                     writer.WriteStartElement("address");
                     string[] elementNames = getTextFormats("A");
                     
-                    for (int i = EXCLUDED_LETTER_INDEX; i < ADDRESS_MAX_SLOTS; i++)
+                    for (int i = EXCLUDED_LETTER_INDEX; i < ADDRESS_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXml(elementNames[i - 1], textArray[i], writer);
+                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
                     }
 
                     writer.WriteEndElement();
@@ -128,9 +126,9 @@ namespace XML_converter_refactored {
                     writer.WriteStartElement("family");
                     string[] elementNames = getTextFormats("F");
                     
-                    for (int i = EXCLUDED_LETTER_INDEX; i < FAMILY_MAX_SLOTS; i++)
+                    for (int i = EXCLUDED_LETTER_INDEX; i < FAMILY_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXml(elementNames[i - 1], textArray[i], writer);
+                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
                     }
                     
                     previousLetter = textArray[LETTER_INDEX];
@@ -179,8 +177,9 @@ namespace XML_converter_refactored {
         }
 
         public static void Main(string[] args) {
-            if (args.Length is > 1 or < 1) {
-                Console.WriteLine("Error, you entered {0} argument(s). You can only enter 1.", args.Length);
+            if (args.Length is > 1 or < 1) 
+            {
+                Console.WriteLine("Error, you entered {0} argument(s). You need to enter 1 argument.", args.Length);
                 Environment.ExitCode = ERROR_BAD_ARGUMENTS;
             }
             
@@ -189,7 +188,7 @@ namespace XML_converter_refactored {
             string filePath = args[PROGRAM_ARGUMENT];
             List<string[]> textList = ReadInputFile(filePath);
             
-            ConvertToXml(textList, filePath);
+            XmlConverterDriver(textList, filePath);
         }
     }
 }
