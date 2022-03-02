@@ -37,10 +37,9 @@ namespace XML_converter_refactored {
             return textList;
         }
 
-        private static string[] getTextFormats(string letterKey)
+        private static string[]? getTextFormats(string letterKey)
         {
-            string[] textFormatArray;
-            bool hasValue = _textFormatDictionary.TryGetValue(letterKey, out textFormatArray);
+            bool hasValue = _textFormatDictionary.TryGetValue(letterKey, out var textFormatArray);
 
             if (!hasValue)
             {
@@ -135,7 +134,11 @@ namespace XML_converter_refactored {
                     }
                     
                     previousLetter = textArray[LETTER_INDEX];
-                }  
+                }
+                else
+                {
+                    Console.WriteLine("Unknown letter '{0}'.", textArray[LETTER_INDEX]);
+                }
             }
             writer.WriteEndElement();
             writer.WriteEndDocument();
