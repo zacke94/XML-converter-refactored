@@ -20,13 +20,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="bin\Debug\net6.0\Microsoft.TestPlatform.Utilities.dll" />
       <Content Include="bin\Debug\net6.0\textFormat.txt" />
     </ItemGroup>
 
     <ItemGroup>
       <None Include="bin\Debug\net6.0\people.txt" />
       <None Include="bin\Debug\net6.0\testcases\people.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="bin\Debug\net6.0\testcases" />
     </ItemGroup>
 
 </Project>

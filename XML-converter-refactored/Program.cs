@@ -10,10 +10,10 @@ namespace XML_converter_refactored {
         private const int FamilyMaxSlots = 2;
         private const int ExcludedLetterIndex = 1;
         
-        private const string TextFormatFileName = "textFormat.txt";
+        //private const string TextFormatFileName = "textFormat.txt";
         
         private static readonly Dictionary<string, string[]> textFormatDictionary = new Dictionary<string, string[]>();
-        private static List<string[]> ReadInputFile(string filePath)
+        public static List<string[]> ReadInputFile(string filePath)
         {
             List<string[]> textList = new List<string[]>();
             try
@@ -27,7 +27,8 @@ namespace XML_converter_refactored {
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception caught: {0}", e);
+                throw new Exception($"Exception caught: {e}");
+                //Console.WriteLine("Exception caught: {0}", e);
             }
             return textList;
         }
@@ -58,7 +59,6 @@ namespace XML_converter_refactored {
         {
             Console.Write("- Warning, wrong data format for '{0}'! ", textArray[LetterIndex]);
             Console.WriteLine("Expected {0} tag elements, got {1}", elementTagNames.Length - 1, textArray.Length - 1);
-        
         }
         private static void XmlConverterDriver(List<string[]> textList, string filePath)
         {
@@ -182,11 +182,11 @@ namespace XML_converter_refactored {
             Console.WriteLine("Created XML file '{0}'", xmlFilePath);
         }
 
-        private static void ReadTextFormat()
+        public static void ReadTextFormat(string textFormatFilePath)
         {
             try
             {
-                string[] textFormatArray = File.ReadAllLines(Path.GetFileName(TextFormatFileName));
+                string[] textFormatArray = File.ReadAllLines(Path.GetFileName(textFormatFilePath));
 
                 foreach (string textRow in textFormatArray)
                 {
@@ -206,9 +206,9 @@ namespace XML_converter_refactored {
                     }
                 }
             }
-            catch (Exception e)
+            catch (FileNotFoundException e)
             {
-                Console.WriteLine("{0} Exception caught.", e);
+                Console.WriteLine("Exception caught: {0}.", e);
             }
         }
 
@@ -218,7 +218,7 @@ namespace XML_converter_refactored {
                 throw new ArgumentException("Error, you entered not correct number of argument. You need to enter 1 argument.");
             }
             
-            ReadTextFormat();
+            ReadTextFormat("textFormat.txt");
 
             string filePath = args[ProgramArgument];
             List<string[]> textList = ReadInputFile(filePath);
