@@ -49,8 +49,20 @@ namespace XML_converter_refactored {
         private static void WriteToXmlFile(string elementName, string elementValue, XmlWriter writer)
         {
             writer.WriteStartElement(elementName);
+            if (elementValue.Length == 0)
+            {
+                Console.WriteLine("- Warning, empty element value for element name '{0}'", elementName);
+ 
+            }
             writer.WriteString(elementValue);
             writer.WriteEndElement();
+        }
+
+        private static void PrintWrongDataFormat(string[] textArray, string[] elementTagNames, IndexOutOfRangeException e)
+        {
+            Console.Write("- Warning, wrong data format for '{0}'! ", textArray[LETTER_INDEX]);
+            Console.WriteLine("Expected {0} tag elements, got {1}", elementTagNames.Length - 1, textArray.Length - 1);
+        
         }
         private static void XmlConverterDriver(List<string[]> textList, string filePath)
         {
@@ -82,24 +94,39 @@ namespace XML_converter_refactored {
                     }
                     
                     writer.WriteStartElement("person");
-                    string[] elementNames = getTextFormats("P");
-                    
+
+                    string[] elementTagNames = getTextFormats("P");
+              
                     for (int i = EXCLUDED_LETTER_INDEX; i < PERSON_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
+                        try
+                        {
+                            WriteToXmlFile(elementTagNames[i - 1], textArray[i], writer);
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            PrintWrongDataFormat(textArray, elementTagNames, e);
+                        }
                     }
-                    
+                  
                     previousLetter = textArray[LETTER_INDEX]; 
                     firstPerson = false; // Will be used later if another Person will be added
                 }
                 else if(string.Equals(textArray[LETTER_INDEX], "T"))
                 {
                     writer.WriteStartElement("phone");
-                    string[] elementNames = getTextFormats("T");
-                    
+                    string[] elementTagNames = getTextFormats("T");
+
                     for (int i = EXCLUDED_LETTER_INDEX; i < PHONE_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
+                        try
+                        {
+                            WriteToXmlFile(elementTagNames[i - 1], textArray[i], writer);
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            PrintWrongDataFormat(textArray, elementTagNames, e);
+                        }
                     }
 
                     writer.WriteEndElement();
@@ -107,11 +134,18 @@ namespace XML_converter_refactored {
                 else if(string.Equals(textArray[LETTER_INDEX], "A"))
                 {
                     writer.WriteStartElement("address");
-                    string[] elementNames = getTextFormats("A");
+                    string[] elementTagNames = getTextFormats("A");
                     
                     for (int i = EXCLUDED_LETTER_INDEX; i < ADDRESS_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
+                        try
+                        {
+                            WriteToXmlFile(elementTagNames[i - 1], textArray[i], writer);
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            PrintWrongDataFormat(textArray, elementTagNames, e);
+                        }
                     }
 
                     writer.WriteEndElement();
@@ -124,11 +158,18 @@ namespace XML_converter_refactored {
                     }
                     
                     writer.WriteStartElement("family");
-                    string[] elementNames = getTextFormats("F");
+                    string[] elementTagNames = getTextFormats("F");
                     
                     for (int i = EXCLUDED_LETTER_INDEX; i < FAMILY_MAX_SLOTS + 1; i++)
                     {
-                        WriteToXmlFile(elementNames[i - 1], textArray[i], writer);
+                        try
+                        {
+                            WriteToXmlFile(elementTagNames[i - 1], textArray[i], writer);
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            PrintWrongDataFormat(textArray, elementTagNames, e);
+                        }
                     }
                     
                     previousLetter = textArray[LETTER_INDEX];
@@ -142,7 +183,7 @@ namespace XML_converter_refactored {
             writer.WriteEndDocument();
             writer.Close();
 
-            Console.WriteLine("Successfully converted and generated a XML file, 'people.xml'!");
+            //Console.WriteLine("Successfully converted and generated a XML file, 'people.xml'!");
         }
 
         private static void GetTextFormat()
@@ -176,7 +217,7 @@ namespace XML_converter_refactored {
             }
         }
 
-        public static void Main(string[] args) {
+        public static int Main(string[] args) {
             if (args.Length is > 1 or < 1) 
             {
                 Console.WriteLine("Error, you entered {0} argument(s). You need to enter 1 argument.", args.Length);
@@ -189,6 +230,7 @@ namespace XML_converter_refactored {
             List<string[]> textList = ReadInputFile(filePath);
             
             XmlConverterDriver(textList, filePath);
+            return 0;
         }
     }
 }

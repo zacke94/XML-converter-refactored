@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML-converter-refactored", "XML-converter-refactored\XML-converter-refactored.csproj", "{F810E65C-FAF9-41E4-BB0B-8903BB8A7A60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML-converter-refactoredTests", "XML-converter-refactoredTests\XML-converter-refactoredTests.csproj", "{61D6A0F2-577D-4900-B1CB-C71EB3B4F5D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{F810E65C-FAF9-41E4-BB0B-8903BB8A7A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F810E65C-FAF9-41E4-BB0B-8903BB8A7A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F810E65C-FAF9-41E4-BB0B-8903BB8A7A60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D6A0F2-577D-4900-B1CB-C71EB3B4F5D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D6A0F2-577D-4900-B1CB-C71EB3B4F5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D6A0F2-577D-4900-B1CB-C71EB3B4F5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D6A0F2-577D-4900-B1CB-C71EB3B4F5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
