@@ -32,18 +32,18 @@ public class Tests
         Assert.That(thrownMessage.Message, Is.EqualTo(message));
     }
 
-    [TestCase("people.txt")]
+    /*[TestCase("people.txt")]
     public void SuccessfullyReturnedList(string filePath)
     {
         Assert.That(XmlConverter.ReadInputFile(filePath), Is.TypeOf<List<string[]>>());
-    }
+    }*/
     
-    
+    /*
     [TestCase("peple.txt")]
     public void FailedReadTextDataFormat(string filePath)
     {
-        Assert.Throws<Exception>(XmlConverter.ReadInputFile(filePath), XmlConverter.ReadTextFormat(filePath));
-    }
+        Assert.Throws<Exception>(XmlConverter.ReadInputFile(filePath), XmlConverter.ReadXmlSchemaFile(filePath));
+    }*/
 
   
 }

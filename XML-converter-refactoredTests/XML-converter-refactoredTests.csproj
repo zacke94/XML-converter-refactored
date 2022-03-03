@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="bin\Debug\net6.0\textFormat.txt" />
+      <Content Include="bin\Debug\net6.0\xml-schema.txt" />
     </ItemGroup>
 
     <ItemGroup>
