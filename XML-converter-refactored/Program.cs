@@ -1,21 +1,18 @@
 ﻿using System.Xml;
-using System;
-using System.Collections.Generic;
 
 namespace XML_converter_refactored {
     public class XmlConverter {
-        private const int ERROR_BAD_ARGUMENTS = 0xA0;
-        private const int PROGRAM_ARGUMENT = 0;
-        private const int LETTER_INDEX = 0;
-        private const int PERSON_MAX_SLOTS = 2;
-        private const int PHONE_MAX_SLOTS = 2;
-        private const int ADDRESS_MAX_SLOTS = 3;
-        private const int FAMILY_MAX_SLOTS = 2;
-        private const int EXCLUDED_LETTER_INDEX = 1;
+        private const int ProgramArgument = 0;
+        private const int LetterIndex = 0;
+        private const int PersonMaxSlots = 2;
+        private const int PhoneMaxSlots = 2;
+        private const int AddressMaxSlots = 3;
+        private const int FamilyMaxSlots = 2;
+        private const int ExcludedLetterIndex = 1;
         
-        private const string TEXT_FORMAT_FILE_NAME = "textFormat.txt";
+        private const string TextFormatFileName = "textFormat.txt";
         
-        private static Dictionary<string, string[]> _textFormatDictionary = new Dictionary<string, string[]>();
+        private static readonly Dictionary<string, string[]> textFormatDictionary = new Dictionary<string, string[]>();
         private static List<string[]> ReadInputFile(string filePath)
         {
             List<string[]> textList = new List<string[]>();
@@ -35,9 +32,9 @@ namespace XML_converter_refactored {
             return textList;
         }
 
-        private static string[]? getTextFormats(string letterKey)
+        private static string[]? GetTextFormats(string letterKey)
         {
-            bool hasValue = _textFormatDictionary.TryGetValue(letterKey, out var textFormatArray);
+            bool hasValue = textFormatDictionary.TryGetValue(letterKey, out var textFormatArray);
 
             if (!hasValue)
             {
@@ -52,7 +49,6 @@ namespace XML_converter_refactored {
             if (elementValue.Length == 0)
             {
                 Console.WriteLine("- Warning, empty element value for element name '{0}'", elementName);
- 
             }
             writer.WriteString(elementValue);
             writer.WriteEndElement();
@@ -60,13 +56,13 @@ namespace XML_converter_refactored {
 
         private static void PrintWrongDataFormat(string[] textArray, string[] elementTagNames, IndexOutOfRangeException e)
         {
-            Console.Write("- Warning, wrong data format for '{0}'! ", textArray[LETTER_INDEX]);
+            Console.Write("- Warning, wrong data format for '{0}'! ", textArray[LetterIndex]);
             Console.WriteLine("Expected {0} tag elements, got {1}", elementTagNames.Length - 1, textArray.Length - 1);
         
         }
         private static void XmlConverterDriver(List<string[]> textList, string filePath)
         {
-            Console.WriteLine("Converting to XML format...");
+            Console.WriteLine("Converting '{0}' to XML format...", Path.GetFileName(filePath));
 
             string previousLetter = ""; //To save information about previous letter, to which level the new tag should be. (E.g. deeper level)
             bool firstPerson = true;    //To know if to close the previous 'Person' tag before adding a new.
@@ -81,7 +77,7 @@ namespace XML_converter_refactored {
 
             foreach(string[] textArray in textList)
             {
-                if(string.Equals(textArray[LETTER_INDEX], "P"))
+                if(string.Equals(textArray[LetterIndex], "P"))
                 {   
                     if(firstPerson == false) //Close the previous 'Person' tag before adding a new.
                     {
@@ -95,9 +91,9 @@ namespace XML_converter_refactored {
                     
                     writer.WriteStartElement("person");
 
-                    string[] elementTagNames = getTextFormats("P");
+                    string[] elementTagNames = GetTextFormats("P");
               
-                    for (int i = EXCLUDED_LETTER_INDEX; i < PERSON_MAX_SLOTS + 1; i++)
+                    for (int i = ExcludedLetterIndex; i < PersonMaxSlots + 1; i++)
                     {
                         try
                         {
@@ -109,15 +105,15 @@ namespace XML_converter_refactored {
                         }
                     }
                   
-                    previousLetter = textArray[LETTER_INDEX]; 
+                    previousLetter = textArray[LetterIndex]; 
                     firstPerson = false; // Will be used later if another Person will be added
                 }
-                else if(string.Equals(textArray[LETTER_INDEX], "T"))
+                else if(string.Equals(textArray[LetterIndex], "T"))
                 {
                     writer.WriteStartElement("phone");
-                    string[] elementTagNames = getTextFormats("T");
+                    string[] elementTagNames = GetTextFormats("T");
 
-                    for (int i = EXCLUDED_LETTER_INDEX; i < PHONE_MAX_SLOTS + 1; i++)
+                    for (int i = ExcludedLetterIndex; i < PhoneMaxSlots + 1; i++)
                     {
                         try
                         {
@@ -131,12 +127,12 @@ namespace XML_converter_refactored {
 
                     writer.WriteEndElement();
                 }
-                else if(string.Equals(textArray[LETTER_INDEX], "A"))
+                else if(string.Equals(textArray[LetterIndex], "A"))
                 {
                     writer.WriteStartElement("address");
-                    string[] elementTagNames = getTextFormats("A");
+                    string[] elementTagNames = GetTextFormats("A");
                     
-                    for (int i = EXCLUDED_LETTER_INDEX; i < ADDRESS_MAX_SLOTS + 1; i++)
+                    for (int i = ExcludedLetterIndex; i < AddressMaxSlots + 1; i++)
                     {
                         try
                         {
@@ -158,9 +154,9 @@ namespace XML_converter_refactored {
                     }
                     
                     writer.WriteStartElement("family");
-                    string[] elementTagNames = getTextFormats("F");
+                    string[] elementTagNames = GetTextFormats("F");
                     
-                    for (int i = EXCLUDED_LETTER_INDEX; i < FAMILY_MAX_SLOTS + 1; i++)
+                    for (int i = ExcludedLetterIndex; i < FamilyMaxSlots + 1; i++)
                     {
                         try
                         {
@@ -172,33 +168,33 @@ namespace XML_converter_refactored {
                         }
                     }
                     
-                    previousLetter = textArray[LETTER_INDEX];
+                    previousLetter = textArray[LetterIndex];
                 }
                 else
                 {
-                    Console.WriteLine("Unknown letter '{0}'.", textArray[LETTER_INDEX]);
+                    Console.WriteLine("Unknown letter '{0}'.", textArray[LetterIndex]);
                 }
             }
             writer.WriteEndElement();
             writer.WriteEndDocument();
             writer.Close();
-
-            //Console.WriteLine("Successfully converted and generated a XML file, 'people.xml'!");
+            
+            Console.WriteLine("Created XML file '{0}'", xmlFilePath);
         }
 
-        private static void GetTextFormat()
+        private static void ReadTextFormat()
         {
             try
             {
-                string[] textFormatArray = File.ReadAllLines(Path.GetFileName(TEXT_FORMAT_FILE_NAME));
+                string[] textFormatArray = File.ReadAllLines(Path.GetFileName(TextFormatFileName));
 
                 foreach (string textRow in textFormatArray)
                 {
                     string[] textRowArray = textRow.Split('|');
 
-                    if (_textFormatDictionary.ContainsKey(textFormatArray[LETTER_INDEX]))
+                    if (textFormatDictionary.ContainsKey(textFormatArray[LetterIndex]))
                     {
-                        Console.WriteLine("Letter '{0}' already exists!", textRowArray[LETTER_INDEX]);
+                        Console.WriteLine("Letter '{0}' already exists!", textRowArray[LetterIndex]);
                     }
                     else
                     {
@@ -206,9 +202,8 @@ namespace XML_converter_refactored {
                  
                         Array.Copy(textRowArray, 1, tagsArray, 0, textRowArray.Length - 1);
                         
-                        _textFormatDictionary.Add(textRowArray[LETTER_INDEX], tagsArray);
+                        textFormatDictionary.Add(textRowArray[LetterIndex], tagsArray);
                     }
-                    
                 }
             }
             catch (Exception e)
@@ -220,16 +215,16 @@ namespace XML_converter_refactored {
         public static int Main(string[] args) {
             if (args.Length is > 1 or < 1) 
             {
-                Console.WriteLine("Error, you entered {0} argument(s). You need to enter 1 argument.", args.Length);
-                Environment.ExitCode = ERROR_BAD_ARGUMENTS;
+                throw new ArgumentException("Error, you entered not correct number of argument. You need to enter 1 argument.");
             }
             
-            GetTextFormat();
+            ReadTextFormat();
 
-            string filePath = args[PROGRAM_ARGUMENT];
+            string filePath = args[ProgramArgument];
             List<string[]> textList = ReadInputFile(filePath);
             
             XmlConverterDriver(textList, filePath);
+            
             return 0;
         }
     }

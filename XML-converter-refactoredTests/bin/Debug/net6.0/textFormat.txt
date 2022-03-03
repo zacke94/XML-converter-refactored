@@ -1,0 +1,4 @@
+P|firstname|lastname
+T|mobile|landline
+A|street|city|zipcode
+F|name|year
