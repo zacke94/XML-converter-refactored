@@ -10,7 +10,6 @@ public class XmlConverter
     private const int ExcludedLetterIndex = 1;
     
     private readonly Dictionary<string, string[]> _xmlSchemaDictionary = new();
-    
     private string[]? GetXmlSchema(string elementKey)
     {
         bool hasValue = _xmlSchemaDictionary.TryGetValue(elementKey, out var xmlFormatArray);

@@ -2,7 +2,7 @@
 public static class MainClass
 {
     private const int ProgramArgument = 0;
-    public static void Main(string[] args)
+    public static int Main(string[] args)
     {
         if (args.Length is > 1 or < 1) 
         {
@@ -16,5 +16,7 @@ public static class MainClass
         List<string[]> textList = xmlConverterObject.ReadInputFile(filePath);
             
         xmlConverterObject.XmlConverterDriver(textList, filePath);
+
+        return 0;
     } 
 }

@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="bin\Debug\net6.0\testcase-missing-element-name.txt" />
       <Content Include="bin\Debug\net6.0\xml-schema.txt" />
     </ItemGroup>
 

@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using XML_converter_refactored;
 
 namespace XML_converter_refactoredTests;
-
 public class Tests
 {
     [SetUp]
@@ -17,33 +13,26 @@ public class Tests
     [TestCase((object) new[] {"people.txt"})]
     public void CorrectConverting(string[] args)
     {
-        Assert.AreEqual(0, XmlConverter.Main(args));
+        Assert.AreEqual(0, MainClass.Main(args));
     }
     
-    [Test]
     [TestCase((object) new[] {"argument 1", "argument 2"})]
-    //[TestCase((object) new[] {""})]
     public void ThrowArgumentException(string[] args)
     {
-        string message = "Error, you entered not correct number of argument. You need to enter 1 argument.";
+        string expectedMessage = "Error, you entered not correct number of argument. You need to enter 1 argument.";
         var thrownMessage = Assert.Throws<ArgumentException>(
-            () => XmlConverter.Main(args));
+            () => MainClass.Main(args));
         
-        Assert.That(thrownMessage.Message, Is.EqualTo(message));
+        Assert.That(thrownMessage?.Message, Is.EqualTo(expectedMessage));
     }
-
-    /*[TestCase("people.txt")]
-    public void SuccessfullyReturnedList(string filePath)
-    {
-        Assert.That(XmlConverter.ReadInputFile(filePath), Is.TypeOf<List<string[]>>());
-    }*/
-    
     /*
-    [TestCase("peple.txt")]
-    public void FailedReadTextDataFormat(string filePath)
+    [TestCase((object) new[] {""})]
+    public void ThrowSomeException(string[] args)
     {
-        Assert.Throws<Exception>(XmlConverter.ReadInputFile(filePath), XmlConverter.ReadXmlSchemaFile(filePath));
+        string expectedMessage = "Error, you entered not correct number of argument. You need to enter 1 argument.";
+        var thrownMessage = Assert.Throws<ArgumentException>(
+            () => MainClass.Main(args));
+        
+        Assert.That(thrownMessage?.Message, Is.EqualTo(expectedMessage));
     }*/
-
-  
 }
