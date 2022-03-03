@@ -10,7 +10,7 @@ public class Tests
     {
     }
 
-    [TestCase((object) new[] {"people.txt"})]
+    [TestCase((object) new[] {"testcase-correct-input-file.txt"})]
     public void CorrectConverting(string[] args)
     {
         Assert.AreEqual(0, MainClass.Main(args));
@@ -25,14 +25,4 @@ public class Tests
         
         Assert.That(thrownMessage?.Message, Is.EqualTo(expectedMessage));
     }
-    /*
-    [TestCase((object) new[] {""})]
-    public void ThrowSomeException(string[] args)
-    {
-        string expectedMessage = "Error, you entered not correct number of argument. You need to enter 1 argument.";
-        var thrownMessage = Assert.Throws<ArgumentException>(
-            () => MainClass.Main(args));
-        
-        Assert.That(thrownMessage?.Message, Is.EqualTo(expectedMessage));
-    }*/
 }

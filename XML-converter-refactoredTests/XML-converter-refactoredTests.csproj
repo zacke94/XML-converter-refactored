@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="bin\Debug\net6.0\people.txt" />
+      <None Include="bin\Debug\net6.0\testcase-correct-input-file.txt" />
       <None Include="bin\Debug\net6.0\testcases\people.txt" />
     </ItemGroup>
 
