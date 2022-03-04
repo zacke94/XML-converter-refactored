@@ -17,7 +17,7 @@
       <Content Include="bin\Debug\net6.0\testcase-empty-element-values.txt" />
       <Content Include="bin\Debug\net6.0\testcase-missing-element-value.txt" />
       <Content Include="bin\Debug\net6.0\testcase-missing-element.txt" />
-      <Content Include="bin\Debug\net6.0\testcase-unkown-letter.txt" />
+      <Content Include="bin\Debug\net6.0\testcase-unknown-letter.txt" />
       <Content Include="bin\Debug\net6.0\XML-converter-refactored.pdb" />
       <Content Include="bin\Debug\net6.0\xml-schema.txt" />
     </ItemGroup>
