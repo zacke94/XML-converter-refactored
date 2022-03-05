@@ -1,7 +1,6 @@
 ﻿using System.Xml.Serialization;
 
 namespace XML_converter_refactored;
-
 public static class Program
 {
     public static int Main(string[] args)
@@ -12,14 +11,15 @@ public static class Program
         {
             throw new ArgumentException("Error, you entered not correct number of argument. You need to enter 1 argument.");
         }
-        
         string inputTxtFileName = args[ConstVariables.ProgramArgument];
             
         if (File.Exists(inputTxtFileName))
         {
             string[] splittedLine;
+            string[] lines = File.ReadAllLines(inputTxtFileName);
             string previousLetter = "";
             string outputXmlFileName = Path.GetFileNameWithoutExtension(inputTxtFileName) + ".xml";
+            bool firstPerson = true;
 
             XmlSerializer peopleSerializer = new XmlSerializer(typeof(People));
             TextWriter xmlFile = new StreamWriter(outputXmlFileName);
@@ -27,10 +27,8 @@ public static class Program
             People people = new People();
             Person person = new Person();
             
-            bool firstPerson = true;
-
-            string[] lines = File.ReadAllLines(inputTxtFileName);
-
+            Console.WriteLine("Converting to XML....");
+            
             foreach (string line in lines)
             {
                 splittedLine = line.Split("|");
@@ -45,7 +43,6 @@ public static class Program
                             Person newPerson = new Person();
                             person = newPerson;
                         }
-
                         person.firstName = splittedLine[ConstVariables.FirstElement];
                         person.lastName = splittedLine[ConstVariables.SecondElement];
 
@@ -108,7 +105,8 @@ public static class Program
             people.person.Add(person);
 
             peopleSerializer.Serialize(xmlFile, people);
-            xmlFile.Close(); 
+            xmlFile.Close();
+            Console.WriteLine("XML file created");
         }
         else
         {
