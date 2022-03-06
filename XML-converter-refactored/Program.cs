@@ -1,13 +1,12 @@
 ﻿using System.Xml.Serialization;
 
 namespace XML_converter_refactored;
+
 public static class Program
 {
     public static int Main(string[] args)
     {
-        const int AcceptedArgument = ConstVariables.AcceptedArgument;
-        
-        if (args.Length is > AcceptedArgument or < AcceptedArgument)
+        if (args.Length is > ConstVariables.AcceptedArgument or < ConstVariables.AcceptedArgument)
         {
             throw new ArgumentException("Error, you entered not correct number of argument. You need to enter 1 argument.");
         }
@@ -20,93 +19,93 @@ public static class Program
             string previousLetter = "";
             string outputXmlFileName = Path.GetFileNameWithoutExtension(inputTxtFileName) + ".xml";
             bool firstPerson = true;
-
+            
             XmlSerializer peopleSerializer = new XmlSerializer(typeof(People));
-            TextWriter xmlFile = new StreamWriter(outputXmlFileName);
+            TextWriter xmlFileWriter = new StreamWriter(outputXmlFileName);
 
-            People people = new People();
-            Person person = new Person();
+            People peopleObject = new People();
+            Person personObject = new Person();
             
             Console.WriteLine("Converting to XML....");
             
             foreach (string line in lines)
             {
                 splittedLine = line.Split("|");
-
+                
                 try
                 {
                     if (string.Equals(splittedLine[ConstVariables.LetterIndex].ToUpper(), "P"))
                     {
                         if (firstPerson == false)
                         {
-                            people.person.Add(person);
-                            Person newPerson = new Person();
-                            person = newPerson;
+                            peopleObject.Person.Add(personObject);
+                            Person newPersonObject = new Person();
+                            personObject = newPersonObject;
                         }
-                        person.firstName = splittedLine[ConstVariables.FirstElement];
-                        person.lastName = splittedLine[ConstVariables.SecondElement];
+                        personObject.FirstName = splittedLine[ConstVariables.FirstNameIndex];
+                        personObject.LastName = splittedLine[ConstVariables.LastNameIndex];
 
                         firstPerson = false;
                         previousLetter = splittedLine[ConstVariables.LetterIndex];
                     }
                     else if (string.Equals(splittedLine[ConstVariables.LetterIndex].ToUpper(), "T"))
                     {
-                        Telephone newTelephone = new Telephone();
-                        newTelephone.mobileNumber = splittedLine[ConstVariables.FirstElement];
-                        newTelephone.landlineNumber = splittedLine[ConstVariables.SecondElement];
+                        Telephone newTelephoneObject = new Telephone();
+                        newTelephoneObject.MobileNumber = splittedLine[ConstVariables.MobileNumberIndex];
+                        newTelephoneObject.LandlineNumber = splittedLine[ConstVariables.LandlineNumberIndex];
 
                         if (string.Equals(previousLetter, "F"))
                         {
-                            Family updateFamily = person.family.Last();
-                            updateFamily.telephone = newTelephone;
+                            Family updateFamilyObject = personObject.Family.Last();
+                            updateFamilyObject.Telephone = newTelephoneObject;
                         }
                         else
                         {
-                            person.telephone = newTelephone;
+                            personObject.Telephone = newTelephoneObject;
                         }
                     }
                     else if (string.Equals(splittedLine[ConstVariables.LetterIndex].ToUpper(), "A"))
                     {
-                        Address newAddress = new Address();
-                        newAddress.street = splittedLine[ConstVariables.FirstElement];
-                        newAddress.city = splittedLine[ConstVariables.SecondElement];
-                        newAddress.zipcode = splittedLine[ConstVariables.ThirdElement];
+                        Address newAddressObject = new Address();
+                        newAddressObject.Street = splittedLine[ConstVariables.StreetIndex];
+                        newAddressObject.City = splittedLine[ConstVariables.CityIndex];
+                        newAddressObject.Zipcode = splittedLine[ConstVariables.ZipcodeIndex];
 
                         if (string.Equals(previousLetter, "F"))
                         {
-                            Family updateFamily = person.family.Last();
-                            updateFamily.address = newAddress;
+                            Family updateFamilyObject = personObject.Family.Last();
+                            updateFamilyObject.Address = newAddressObject;
                         }
                         else
                         {
-                            person.address = newAddress;  
+                            personObject.Address = newAddressObject;  
                         }
                     }
                     else if (string.Equals(splittedLine[ConstVariables.LetterIndex].ToUpper(), "F"))
                     {
-                        Family newFamily = new Family();
-                        newFamily.name = splittedLine[ConstVariables.FirstElement];
-                        newFamily.year = splittedLine[ConstVariables.SecondElement];
+                        Family newFamilyObject = new Family();
+                        newFamilyObject.Name = splittedLine[ConstVariables.FamilyMemberNameIndex];
+                        newFamilyObject.Year = splittedLine[ConstVariables.FamilyMemberYearIndex];
                       
-                        person.family.Add(newFamily);
+                        personObject.Family.Add(newFamilyObject);
                         previousLetter = splittedLine[ConstVariables.LetterIndex];
                     }
                     else
                     {
-                        Console.WriteLine("- Wrong input: '{0}'", splittedLine[ConstVariables.LetterIndex]);
+                        Console.WriteLine("- Error, unknown input: '{0}'", splittedLine[ConstVariables.LetterIndex]);
                     }
                 }
-                catch (Exception e)
+                catch (IndexOutOfRangeException e)
                 {
-                    Console.WriteLine("- Error, wrong input!");
+                    Console.WriteLine("- Error, missing input field!");
                     Console.WriteLine("Exception caught: {0}", e);
                 }
             }
-            people.person.Add(person);
+            peopleObject.Person.Add(personObject);
 
-            peopleSerializer.Serialize(xmlFile, people);
-            xmlFile.Close();
-            Console.WriteLine("XML file created");
+            peopleSerializer.Serialize(xmlFileWriter, peopleObject);
+            xmlFileWriter.Close();
+            Console.WriteLine("XML file created: {0}", outputXmlFileName);
         }
         else
         {

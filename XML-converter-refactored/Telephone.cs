@@ -5,7 +5,8 @@ namespace XML_converter_refactored;
 public class Telephone
 {
     [XmlElement(ElementName = "mobile")]
-    public string mobileNumber;
+    public string MobileNumber;
+    
     [XmlElement(ElementName = "landline")]
-    public string landlineNumber;
+    public string LandlineNumber;
 }

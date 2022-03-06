@@ -5,10 +5,10 @@ namespace XML_converter_refactored;
 public class People
 {
     [XmlElement("person", Type = typeof(Person))]
-    public List<Person> person;
+    public List<Person> Person;
 
     public People()
     {
-        person = new List<Person>();
+        Person = new List<Person>();
     }
 }

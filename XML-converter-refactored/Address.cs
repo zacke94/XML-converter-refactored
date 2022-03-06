@@ -1,8 +1,15 @@
+using System.Xml.Serialization;
+
 namespace XML_converter_refactored;
 
 public class Address
 {
-    public string street;
-    public string city;
-    public string zipcode;
+    [XmlElement(ElementName = "street")]
+    public string Street;
+    
+    [XmlElement(ElementName = "city")]
+    public string City;
+    
+    [XmlElement(ElementName = "zipcode")]
+    public string Zipcode;
 }

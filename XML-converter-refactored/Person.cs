@@ -1,20 +1,26 @@
 using System.Xml.Serialization;
 
 namespace XML_converter_refactored;
+
 public class Person
 {
     [XmlElement(ElementName = "firstname")]
-    public string firstName;
+    public string FirstName;
+    
     [XmlElement(ElementName = "lastname")]
-    public string lastName;
-    public Telephone telephone;
-    public Address address;
+    public string LastName;
+    
+    [XmlElement(ElementName = "telephone")]
+    public Telephone Telephone;
+    
+    [XmlElement(ElementName = "address")]
+    public Address Address;
 
     [XmlElement("family", Type = typeof(Family))]
-    public List<Family> family;
-
+    public List<Family> Family;
+    
     public Person()
     {
-        family = new List<Family>();
+        Family = new List<Family>();
     }
 }
